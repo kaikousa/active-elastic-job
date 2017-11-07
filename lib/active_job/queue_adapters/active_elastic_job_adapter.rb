@@ -165,7 +165,7 @@ module ActiveJob
         end
 
         def aws_sqs_client
-          @aws_sqs_client ||= Aws::SQS::Client.new(credentials: aws_sqs_client_credentials )
+          @aws_sqs_client ||= Aws::SQS::Client.new(credentials: aws_sqs_client_credentials, region: aws_region)
         end
 
         def aws_sqs_client_credentials
@@ -177,7 +177,7 @@ module ActiveJob
         end
 
         def aws_region
-          config.aws_region
+          ENV["AWS_REGION"] || config.aws_region
         end
 
         def config

@@ -35,6 +35,7 @@ module ActiveElasticJob
         request = ActionDispatch::Request.new env
         if enabled? && aws_sqsd?(request)
           unless request.local? || sent_from_docker_host?(request)
+            puts "ERROR: non-local or non-docker request"
             return FORBIDDEN_RESPONSE
           end
 
@@ -45,6 +46,7 @@ module ActiveElasticJob
             begin
               execute_job(request)
             rescue ActiveElasticJob::MessageVerifier::InvalidDigest => e
+              puts "ERROR: InvalidDigest"
               return FORBIDDEN_RESPONSE
             end
             return OK_RESPONSE 
